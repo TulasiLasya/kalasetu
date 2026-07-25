@@ -5,6 +5,7 @@ import (
 	"kalasetu/graph"
 	"kalasetu/handlers"
 	"kalasetu/migrations"
+	"kalasetu/middlewares"
 	"kalasetu/repos"
 	"kalasetu/routes"
 	"kalasetu/services"
@@ -56,9 +57,13 @@ func NewApp() *App {
 	refreshTokenRepo := repos.NewRefreshTokenRepository(db)
 	authService := services.NewAuthService(userRepo, refreshTokenRepo)
 	authHandler := handlers.NewAuthHandler(authService)
+
+	userService := services.NewUserService(userRepo)
+	userHandler := handlers.NewUserHandler(userService)
 	
 	apiV1 := r.Group("/api/v1")
 	routes.RegisterAuthRoutes(apiV1, authHandler)
+	routes.RegisterUserRoutes(apiV1, userHandler, middlewares.JWTAuthMiddleware())
 
 	resolver := &graph.Resolver{}
 	srv := gqlSetup(resolver)
