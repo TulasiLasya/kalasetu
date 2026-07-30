@@ -1,0 +1,19 @@
+DROP TABLE IF EXISTS likes;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS applications;
+DROP TABLE IF EXISTS slots;
+DROP TABLE IF EXISTS opportunity_labels;
+DROP TABLE IF EXISTS opportunities;
+DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS user_labels;
+DROP TABLE IF EXISTS labels;
+DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS roles;
+
+ALTER TABLE users 
+    DROP COLUMN IF EXISTS user_name,
+    DROP COLUMN IF EXISTS bio,
+    DROP COLUMN IF EXISTS profile_picture,
+    DROP COLUMN IF EXISTS location;

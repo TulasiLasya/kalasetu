@@ -46,3 +46,11 @@ type RefreshToken struct {
 	Revoked   bool      `json:"revoked"`
 }
 
+type OnboardingUser struct {
+	Name           string   `json:"name" binding:"required"`
+	Role           string   `json:"role" binding:"required"`
+	Location       string   `json:"location" binding:"required"`
+	Labels         []string `json:"labels"`
+	Bio            string   `json:"bio"`
+	ProfilePicture string   `json:"profile_picture"`
+}
