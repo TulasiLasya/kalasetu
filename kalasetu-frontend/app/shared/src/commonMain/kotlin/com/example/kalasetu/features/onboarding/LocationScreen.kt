@@ -17,12 +17,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kalasetu.theme.SubtitleGray
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingLocationScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
 ) {
-    var location by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+
+    val selectedCountry = Countries.firstOrNull { it.equals(query, ignoreCase = true) }
+    val filteredCountries = if (query.isBlank()) {
+        Countries
+    } else {
+        Countries.filter { it.contains(query, ignoreCase = true) }
+    }
 
     Box(
         modifier = Modifier
@@ -58,45 +67,72 @@ fun OnboardingLocationScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "Location",
+                text = "Country",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
-                value = location,
-                onValueChange = { location = it },
-                placeholder = { Text("Enter your Country") },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.LocationOn,
-                        contentDescription = null,
-                    )
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(10.dp),
-                modifier = Modifier.fillMaxWidth(),
-            )
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = it },
+            ) {
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = {
+                        query = it
+                        expanded = true
+                    },
+                    placeholder = { Text("Enter your Country") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.LocationOn,
+                            contentDescription = null,
+                        )
+                    },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    singleLine = true,
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable),
+                )
+
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier.height(300.dp),
+                ) {
+                    filteredCountries.forEach { country ->
+                        DropdownMenuItem(
+                            text = { Text(country) },
+                            onClick = {
+                                query = country
+                                expanded = false
+                            },
+                        )
+                    }
+                }
+            }
         }
 
         IconButton(
             onClick = onNext,
-            enabled = location.isNotBlank(),
+            enabled = selectedCountry != null,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .size(56.dp)
                 .clip(RoundedCornerShape(28.dp))
                 .background(
-                    if (location.isNotBlank()) MaterialTheme.colorScheme.primary
+                    if (selectedCountry != null) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.surfaceVariant
                 ),
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = "Next",
-                tint = if (location.isNotBlank()) MaterialTheme.colorScheme.onPrimary
+                tint = if (selectedCountry != null) MaterialTheme.colorScheme.onPrimary
                        else MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

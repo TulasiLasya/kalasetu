@@ -18,7 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kalasetu.theme.SelectedPurple
 import com.example.kalasetu.theme.SubtitleGray
+import com.example.kalasetu.theme.UnselectedBorder
 
 private data class InterestSection(val title: String, val options: List<String>)
 
@@ -95,14 +97,14 @@ fun InterestsScreen(
                             shape = RoundedCornerShape(25.dp),
                             border = BorderStroke(
                                 1.dp,
-                                if (isSelected) Color(0xFF836AE0)
-                                else Color(0xFFCCCCCC)
+                                if (isSelected) SelectedPurple
+                                else UnselectedBorder
                             ),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 containerColor = if (isSelected)
-                                    Color(0xFF836AE0).copy(alpha = 0.1f)
+                                    SelectedPurple.copy(alpha = 0.1f)
                                 else Color.Transparent,
-                                contentColor = if (isSelected) Color(0xFF836AE0)
+                                contentColor = if (isSelected) SelectedPurple
                                 else MaterialTheme.colorScheme.onSurfaceVariant,
                             ),
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
