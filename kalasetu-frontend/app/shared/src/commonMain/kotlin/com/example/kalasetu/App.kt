@@ -1,6 +1,7 @@
 package com.example.kalasetu
 
 import androidx.compose.runtime.*
+import com.example.kalasetu.features.auth.*
 import com.example.kalasetu.features.onboarding.*
 import com.example.kalasetu.navigation.Screen
 import com.example.kalasetu.theme.KalasetuTheme
@@ -13,7 +14,25 @@ fun App() {
     KalasetuTheme {
         when (screen) {
             Screen.OnboardingWelcome -> OnboardingWelcomeScreen(
-                onNext = { screen = Screen.OnboardingBasicInfo }
+                onNext = { screen = Screen.AuthSignup }
+            )
+
+            Screen.AuthSignup -> AuthSignupScreen(
+                onSignUp = { screen = Screen.AuthOtp },
+                onLogin = { screen = Screen.AuthLogin },
+                onBack = { screen = Screen.OnboardingWelcome }
+            )
+
+            Screen.AuthOtp -> AuthOtpScreen(
+                onVerify = { screen = Screen.OnboardingBasicInfo },
+                onLogin = { screen = Screen.AuthLogin },
+                onBack = { screen = Screen.AuthSignup }
+            )
+
+            Screen.AuthLogin -> AuthLoginScreen(
+                onLogin = { screen = Screen.OnboardingBasicInfo },
+                onSignUp = { screen = Screen.AuthSignup },
+                onBack = { screen = Screen.AuthSignup }
             )
 
             Screen.OnboardingBasicInfo -> OnboardingBasicInfoScreen(
@@ -21,7 +40,7 @@ fun App() {
                     selectedRole = role
                     screen = Screen.OnboardingLocation
                 },
-                onBack = { screen = Screen.OnboardingWelcome }
+                onBack = { screen = Screen.AuthOtp }
             )
 
             Screen.OnboardingLocation -> OnboardingLocationScreen(
@@ -58,8 +77,6 @@ fun App() {
             Screen.OnboardingDone -> OnboardingDoneScreen(
                 onFinish = { /* Navigate to main app */ }
             )
-
-            else -> {}
         }
     }
 }
