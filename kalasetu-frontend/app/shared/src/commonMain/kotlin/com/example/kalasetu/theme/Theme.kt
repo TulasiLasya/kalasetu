@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val SubtitleGray = Color(0xFFCCCCCC)
+val SelectedPurple = Color(0xFF836AE0)
+val UnselectedBorder = Color(0xFFCCCCCC)
 
 private val LightColors = lightColorScheme(
     primary = Color(0xFF7466F1),

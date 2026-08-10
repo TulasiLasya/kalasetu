@@ -16,7 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kalasetu.theme.SelectedPurple
 import com.example.kalasetu.theme.SubtitleGray
+import com.example.kalasetu.theme.UnselectedBorder
 
 @Composable
 fun OrganizerTypeScreen(
@@ -73,12 +75,12 @@ fun OrganizerTypeScreen(
                     shape = RoundedCornerShape(25.dp),
                     border = BorderStroke(
                         1.dp,
-                        if (selectedType == type) Color(0xFF836AE0)
-                        else Color(0xFFCCCCCC)
+                        if (selectedType == type) SelectedPurple
+                        else UnselectedBorder
                     ),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = if (selectedType == type)
-                            Color(0xFF836AE0).copy(alpha = 0.08f)
+                            SelectedPurple.copy(alpha = 0.08f)
                         else Color.Transparent,
                         contentColor = Color(0xFF1C1B1F),
                     ),
