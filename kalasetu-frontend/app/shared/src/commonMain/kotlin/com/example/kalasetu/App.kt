@@ -1,21 +1,8 @@
 package com.example.kalasetu
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.example.kalasetu.features.onboarding.ExperienceScreen
-import com.example.kalasetu.features.onboarding.InterestsScreen
-import com.example.kalasetu.features.onboarding.OnboardingBasicInfoScreen
-import com.example.kalasetu.features.onboarding.OnboardingDoneScreen
-import com.example.kalasetu.features.onboarding.OnboardingLocationScreen
-import com.example.kalasetu.features.onboarding.OnboardingWelcomeScreen
-import com.example.kalasetu.features.onboarding.OrganizerIntentScreen
-import com.example.kalasetu.features.onboarding.OrganizerTypeScreen
-import com.example.kalasetu.features.profile.ProfilePresenter
-import com.example.kalasetu.features.profile.ProfileRepository
-import com.example.kalasetu.features.profile.ProfileScreen
+import androidx.compose.runtime.*
+import com.example.kalasetu.features.onboarding.*
+import com.example.kalasetu.features.profile.*
 import com.example.kalasetu.navigation.Screen
 import com.example.kalasetu.theme.KalasetuTheme
 
