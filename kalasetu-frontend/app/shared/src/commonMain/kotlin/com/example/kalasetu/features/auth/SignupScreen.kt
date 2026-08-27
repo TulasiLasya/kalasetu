@@ -25,7 +25,9 @@ fun AuthSignupScreen(
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    val canSignUp = email.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank()
+    val isEmailValid = email.matches(Regex("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"))
+    val passwordsMatch = password == confirmPassword
+    val canSignUp = isEmailValid && password.isNotBlank() && passwordsMatch
 
     Box(
         modifier = Modifier
@@ -58,10 +60,26 @@ fun AuthSignupScreen(
             Spacer(Modifier.height(32.dp))
 
             AuthTextField(value = email, onValueChange = { email = it }, placeholder = "Email")
+            if (email.isNotBlank() && !isEmailValid) {
+                Text(
+                    text = "Enter a valid email address",
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(top = 4.dp, start = 4.dp),
+                )
+            }
             Spacer(Modifier.height(16.dp))
             AuthTextField(value = password, onValueChange = { password = it }, placeholder = "Password", isPassword = true)
             Spacer(Modifier.height(16.dp))
             AuthTextField(value = confirmPassword, onValueChange = { confirmPassword = it }, placeholder = "Confirm Password", isPassword = true)
+            if (confirmPassword.isNotBlank() && !passwordsMatch) {
+                Text(
+                    text = "Passwords do not match",
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(top = 4.dp, start = 4.dp),
+                )
+            }
 
             Spacer(Modifier.height(24.dp))
 

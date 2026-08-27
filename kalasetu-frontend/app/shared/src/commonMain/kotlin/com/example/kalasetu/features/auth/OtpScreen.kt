@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import com.example.kalasetu.theme.SelectedPurple
 import com.example.kalasetu.theme.SubtitleGray
 import com.example.kalasetu.theme.UnselectedBorder
@@ -36,9 +37,17 @@ fun AuthOtpScreen(
 ) {
     var otp by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
+    var remainingSeconds by remember { mutableStateOf(60) }
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+    }
+
+    LaunchedEffect(remainingSeconds) {
+        while (remainingSeconds > 0) {
+            delay(1000)
+            remainingSeconds--
+        }
     }
 
     Box(
@@ -144,12 +153,24 @@ fun AuthOtpScreen(
 
             Spacer(Modifier.height(32.dp))
 
-            Text(
-                text = "Resend code in 00:11",
-                fontSize = 14.sp,
-                color = SubtitleGray,
-            )
-
+            if (remainingSeconds > 0) {
+                Text(
+                    text = "Resend code in 00:${remainingSeconds.toString().padStart(2, '0')}",
+                    fontSize = 14.sp,
+                    color = SubtitleGray,
+                )
+            } else {
+                TextButton(
+                    onClick = { remainingSeconds = 60 },
+                    contentPadding = PaddingValues(0.dp),
+                ) {
+                    Text(
+                        text = "Didn't receive the code? Resend",
+                        fontSize = 14.sp,
+                        color = SelectedPurple,
+                    )
+                }
+            }
 
 
             TextButton(
