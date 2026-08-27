@@ -1,7 +1,7 @@
 package com.example.kalasetu.features.profile
 
-class ProfileRepository {
-    suspend fun fetchProfile(userId: String): Profile {
+open class FakeProfileRepository : ProfileRepositoryContract {
+    override suspend fun fetchProfile(userId: String): Profile {
         return Profile(
             id = userId,
             name = "Sarah Anderson",
@@ -20,15 +20,9 @@ class ProfileRepository {
                 "Graphic Design", "UI/UX", "Animation"
             ),
             artworksImages = listOf(
-                "https://picsum.photos/200/200?random=1",
-                "https://picsum.photos/200/200?random=2",
-                "https://picsum.photos/200/200?random=3",
-                "https://picsum.photos/200/200?random=4",
-                "https://picsum.photos/200/200?random=5",
-                "https://picsum.photos/200/200?random=6",
-                "https://picsum.photos/200/200?random=7",
-                "https://picsum.photos/200/200?random=8",
-                "https://picsum.photos/200/200?random=9"
+                "https://example.com/art1.jpg",
+                "https://example.com/art2.jpg",
+                "https://example.com/art3.jpg"
             ),
             achievements = listOf(
                 Achievement(" Top Creator 2024", "Recognized as top 1% creator"),

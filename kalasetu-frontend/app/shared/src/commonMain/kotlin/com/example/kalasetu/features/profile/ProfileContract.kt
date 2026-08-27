@@ -12,8 +12,8 @@ interface ProfileContract {
         fun attachView(view: View)
         fun loadProfile(userId: String)
         fun onEditProfileClicked()
-        fun onShareClicked()
         fun onTabSelected(tab: ProfileTab)
         fun detach()
+
     }
 }

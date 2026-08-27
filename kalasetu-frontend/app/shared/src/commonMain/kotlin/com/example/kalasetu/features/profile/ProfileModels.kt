@@ -39,13 +39,20 @@ data class ProfileUiState(
     val selectedTab: ProfileTab = ProfileTab.ACHIEVEMENTS
 )
 
-/** "Sarah Anderson" → "SA" */
-fun String.toInitials(): String =
-    trim().split(" ")
+fun String.toInitials(): String {
+    if (isBlank()) return ""
+    val parts = trim()
+        .split(Regex("[\\s-]+"))
         .filter { it.isNotBlank() }
-        .take(2)
-        .joinToString("") { it.first().uppercaseChar().toString() }
 
+    if (parts.isEmpty()) return ""
+
+    val firstInitial = parts.first().first().uppercaseChar()
+    if (parts.size == 1) return firstInitial.toString()
+
+    val lastInitial = parts.last().first().uppercaseChar()
+    return "$firstInitial$lastInitial"
+}
 fun Int.toDisplayCount(): String = when {
     this >= 1_000_000 -> {
         val m = this / 1_000_000.0
@@ -58,4 +65,8 @@ fun Int.toDisplayCount(): String = when {
         if (s % 10 == 0) "${s / 10}K" else "${s / 10}.${s % 10}K"
     }
     else -> this.toString()
+}
+
+interface ProfileRepositoryContract {
+    suspend fun fetchProfile(userId: String): Profile
 }

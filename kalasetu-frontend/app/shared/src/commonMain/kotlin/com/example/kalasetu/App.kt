@@ -1,6 +1,7 @@
 package com.example.kalasetu
 
 import androidx.compose.runtime.*
+import androidx.compose.material3.*
 import com.example.kalasetu.features.onboarding.*
 import com.example.kalasetu.features.profile.*
 import com.example.kalasetu.navigation.Screen
@@ -23,7 +24,7 @@ fun App() {
                     selectedRole = role
                     screen = Screen.OnboardingLocation
                 },
-                onBack = { screen = Screen.OnboardingWelcome }
+                onBack = { screen = Screen.OnboardingWelcome },
             )
 
             Screen.OnboardingLocation -> OnboardingLocationScreen(
@@ -34,32 +35,33 @@ fun App() {
                         else              -> Screen.AudienceInterests
                     }
                 },
-                onBack = { screen = Screen.OnboardingBasicInfo }
+                onBack = { screen = Screen.OnboardingBasicInfo },
             )
 
             Screen.ArtistExperience -> ExperienceScreen(
                 onNext = { screen = Screen.OnboardingDone },
-                onBack = { screen = Screen.OnboardingLocation }
+                onBack = { screen = Screen.OnboardingLocation },
             )
 
             Screen.OrganizerType -> OrganizerTypeScreen(
                 onNext = { screen = Screen.OrganizerIntent },
-                onBack = { screen = Screen.OnboardingLocation }
+                onBack = { screen = Screen.OnboardingLocation },
             )
 
             Screen.OrganizerIntent -> OrganizerIntentScreen(
                 onNext = { screen = Screen.OnboardingDone },
-                onBack = { screen = Screen.OrganizerType }
+                onBack = { screen = Screen.OrganizerType },
             )
 
             Screen.AudienceInterests -> InterestsScreen(
                 onNext = { screen = Screen.OnboardingDone },
-                onBack = { screen = Screen.OnboardingLocation }
+                onBack = { screen = Screen.OnboardingLocation },
             )
 
             Screen.OnboardingDone -> OnboardingDoneScreen(
                 onFinish = {
-                    // TODO: replace "123" with the real userId returned after registration
+                    // Temporary mock user ID for Profile UI development.
+                    // Replace with the authenticated user ID when registration/auth is integrated.
                     screen = Screen.Profile(userId = "123")
                 }
             )
@@ -67,14 +69,19 @@ fun App() {
             is Screen.Profile -> {
 
                 val presenter = remember(currentScreen.userId) {
-                    ProfilePresenter(repository = ProfileRepository())
+                    ProfilePresenter(repository = FakeProfileRepository())
                 }
                 ProfileScreen(
                     presenter = presenter,
                     userId = currentScreen.userId,
-                    onEditProfile = { /* screen = Screen.EditProfile */ },
-                    onShare = { /* share sheet */ }
+                    onEditProfile = { screen = Screen.EditProfile(currentScreen.userId) },
+                    onShare = { /* Handle share */ },
                 )
+            }
+
+            is Screen.EditProfile -> {
+                // Placeholder for EditProfileScreen
+                Text("Edit Profile for user ${currentScreen.userId}")
             }
         }
     }

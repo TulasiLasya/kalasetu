@@ -12,5 +12,6 @@ sealed class Screen {
     data object AudienceInterests   : Screen()
 
     data class Profile(val userId: String) : Screen()
+    data class EditProfile(val userId: String) : Screen()
 
 }
