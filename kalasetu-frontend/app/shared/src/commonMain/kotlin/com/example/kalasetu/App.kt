@@ -2,6 +2,7 @@ package com.example.kalasetu
 
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
+import com.example.kalasetu.features.auth.*
 import com.example.kalasetu.features.onboarding.*
 import com.example.kalasetu.features.profile.*
 import com.example.kalasetu.navigation.Screen
@@ -16,7 +17,25 @@ fun App() {
         when (val currentScreen = screen) {
 
             Screen.OnboardingWelcome -> OnboardingWelcomeScreen(
-                onNext = { screen = Screen.OnboardingBasicInfo }
+                onNext = { screen = Screen.AuthSignup }
+            )
+
+            Screen.AuthSignup -> AuthSignupScreen(
+                onSignUp = { screen = Screen.AuthOtp },
+                onLogin = { screen = Screen.AuthLogin },
+                onBack = { screen = Screen.OnboardingWelcome }
+            )
+
+            Screen.AuthOtp -> AuthOtpScreen(
+                onVerify = { screen = Screen.OnboardingBasicInfo },
+                onLogin = { screen = Screen.AuthLogin },
+                onBack = { screen = Screen.AuthSignup }
+            )
+
+            Screen.AuthLogin -> AuthLoginScreen(
+                onLogin = { screen = Screen.OnboardingBasicInfo },
+                onSignUp = { screen = Screen.AuthSignup },
+                onBack = { screen = Screen.AuthSignup }
             )
 
             Screen.OnboardingBasicInfo -> OnboardingBasicInfoScreen(
