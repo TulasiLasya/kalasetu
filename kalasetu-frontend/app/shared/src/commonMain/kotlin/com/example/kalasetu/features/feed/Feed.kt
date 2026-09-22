@@ -23,8 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
@@ -100,6 +103,7 @@ fun FeedScreen(
     userName: String? = null,
     onNavigateToProfile: () -> Unit = {},
     onNavigateToStore: () -> Unit = {},
+    onNavigateToEvents: () -> Unit = {},
     onNavigateToHome: () -> Unit = {},
     onMenuClick: () -> Unit = {}
 ) {
@@ -132,9 +136,10 @@ fun FeedScreen(
         },
         bottomBar = {
             KalaBottomNav(
-                selectedIndex = 1,
-                onHomeClick = onNavigateToHome,
+                selectedIndex = 0, // Home/Dashboard
                 onStoreClick = onNavigateToStore,
+                onEventsClick = onNavigateToEvents,
+                onHomeClick = onNavigateToHome,
                 onProfileClick = onNavigateToProfile
             )
         }
@@ -197,7 +202,7 @@ internal fun FeedContent(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 8.dp)
     ) {
-        items(posts, key = { it.id }) { post ->
+        items(posts) { post ->
             PostCard(
                 post = post,
                 onLikeClick = { onLikeClick(post.id) },
@@ -470,6 +475,21 @@ private fun PostCard(
                     icon = Icons.Default.Share,
                     label = "Share",
                     onClick = { /* Share logic */ }
+                var expanded by remember { mutableStateOf(false) }
+                Text(
+                    buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(fontWeight = FontWeight.Bold)
+                        ) {
+                            append(post.artistName)
+                        }
+
+                        append(" · ")
+                        append(post.caption)
+                    },
+                    fontSize = 13.sp,
+                    maxLines = if (expanded) Int.MAX_VALUE else 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
